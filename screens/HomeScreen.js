@@ -248,10 +248,6 @@ const HomeScreen = () => {
     fetchData();
   }, []);
 
-  const onGenderOpen = useCallback(() => {
-    setCompanyOpen(false);
-  }, []);
-
   const cart = useSelector((state) => state.cart.cart);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -261,7 +257,7 @@ const HomeScreen = () => {
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: "#fcd7ae66",
+          backgroundColor: "#fcd7ae11",
         }}
       >
         <ScrollView>
@@ -371,6 +367,7 @@ const HomeScreen = () => {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {offers.map((item, index) => (
               <Pressable
+              key={index}
                 onPress={() =>
                   navigation.navigate("Info", {
                     id: item.id,
@@ -381,7 +378,6 @@ const HomeScreen = () => {
                     item: item,
                   })
                 }
-                key={index}
                 style={{
                   marginVertical: 5,
                   marginHorizontal: 5,
@@ -431,6 +427,7 @@ const HomeScreen = () => {
           >
             {karcher.map((item, index) => (
               <Pressable
+              key={index}
                 onPress={() =>
                   navigation.navigate("Info", {
                     id: item.id,
@@ -478,10 +475,10 @@ const HomeScreen = () => {
               setItems={setItems}
               placeholder="Kategori Seçin"
               placeholderStyle={styles.placeholderStyles}
-              onOpen={onGenderOpen}
               // onChangeValue={onChange}
               zIndex={3000}
               zIndexInverse={1000}
+              listMode="SCROLLVIEW"
             />
           </View>
 

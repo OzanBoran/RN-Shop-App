@@ -6,10 +6,13 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { jwtDecode } from "jwt-decode";
+import { UserType } from "../UserContext";
 
 const AddressScreen = () => {
   const navigation = useNavigation();
@@ -31,9 +34,18 @@ const AddressScreen = () => {
     { label: "Bireysel", value: "Bireysel" },
     { label: "Kurumsal", value: "Kurumsal" },
   ]);
+  const [userId, setUserId] = useContext(UserType);
+
+  useEffect(() => {
+    const fetchUser = async() => {
+      const token = await AsyncStorage.getItem("authToken");
+      const decodedToken = jwt_decode(token);
+      const userId = decodedToken.userId;
+    }
+  },[]);
 
   return (
-    <ScrollView style={{ marginTop: 50 }}>
+    <ScrollView style={{ marginTop: 50, }} automaticallyAdjustKeyboardInsets>
       <View
         style={{
           padding: 10,
@@ -57,7 +69,7 @@ const AddressScreen = () => {
           placeholderTextColor={"black"}
           style={{
             padding: 10,
-            borderColor: "#EA871C55",
+            borderColor: "#EA871C77",
             borderWidth: 1,
             marginTop: 10,
             borderRadius: 5,
@@ -74,7 +86,7 @@ const AddressScreen = () => {
             onChangeText={(text) => setName(text)}
             style={{
               padding: 10,
-              borderColor: "#EA871C55",
+              borderColor: "#EA871C77",
               borderWidth: 1,
               marginTop: 10,
               borderRadius: 5,
@@ -93,7 +105,7 @@ const AddressScreen = () => {
             onChangeText={(text) => setMobileNo(text)}
             style={{
               padding: 10,
-              borderColor: "#EA871C55",
+              borderColor: "#EA871C77",
               borderWidth: 1,
               marginTop: 10,
               borderRadius: 5,
@@ -115,7 +127,7 @@ const AddressScreen = () => {
             onChangeText={(text) => setOpenAddress(text)}
             style={{
               padding: 10,
-              borderColor: "#EA871C55",
+              borderColor: "#EA871C77",
               borderWidth: 1,
               marginTop: 10,
               borderRadius: 5,
@@ -132,7 +144,7 @@ const AddressScreen = () => {
             onChangeText={(text) => setCity(text)}
             style={{
               padding: 10,
-              borderColor: "#EA871C55",
+              borderColor: "#EA871C77",
               borderWidth: 1,
               marginTop: 10,
               borderRadius: 5,
@@ -148,7 +160,7 @@ const AddressScreen = () => {
             onChangeText={(text) => setQuarter(text)}
             style={{
               padding: 10,
-              borderColor: "#EA871C55",
+              borderColor: "#EA871C77",
               borderWidth: 1,
               marginTop: 10,
               borderRadius: 5,
@@ -162,7 +174,7 @@ const AddressScreen = () => {
             onChangeText={(text) => setPostalCode(text)}
             style={{
               padding: 10,
-              borderColor: "#EA871C55",
+              borderColor: "#EA871C77",
               borderWidth: 1,
               marginTop: 10,
               borderRadius: 5,
@@ -170,16 +182,16 @@ const AddressScreen = () => {
           ></TextInput>
         </View>
 
-        <View>
+        <View style={{ marginTop:30 }} >
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>Fatura türü</Text>
           <DropDownPicker
             style={{
               borderColor: "#B7B7B7",
               height: 30,
-              marginBottom: open ? 120 : 15,
-              marginTop: 20,
+              marginBottom: open ? 120 : 30,
+              marginTop: 10,
               width: "45%",
-              marginBottom: open ? 50 : 15,
+              marginBottom: open ? 50 : 30,
             }}
             open={open}
             value={value}
@@ -188,12 +200,54 @@ const AddressScreen = () => {
             setValue={setValue}
             setItems={setItems}
             defaultValue={value}
+            listMode="SCROLLVIEW"
           />
 
-          {items.value == "Kurumsal" ? (
-            <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 10 }}>
-              vergi numarası
-            </Text>
+          {value == "Kurumsal" ? (
+            <View>
+              <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 10 }}>
+                Firma Ünvanı
+              </Text>
+              <TextInput
+                value={company}
+                onChangeText={(text) => setCompany(text)}
+                style={{
+                  padding: 10,
+                  borderColor: "#EA871C77",
+                  borderWidth: 1,
+                  marginTop: 10,
+                  borderRadius: 5,
+                }}
+              ></TextInput>
+              <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 10 }}>
+                Vergi Numarası
+              </Text>
+              <TextInput
+                value={taxNo}
+                onChangeText={(text) => setTaxNo(text)}
+                style={{
+                  padding: 10,
+                  borderColor: "#EA871C77",
+                  borderWidth: 1,
+                  marginTop: 10,
+                  borderRadius: 5,
+                }}
+              ></TextInput>
+              <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 10 }}>
+                Vergi Dairesi
+              </Text>
+              <TextInput
+                value={taxOffice}
+                onChangeText={(text) => setTaxOffice(text)}
+                style={{
+                  padding: 10,
+                  borderColor: "#EA871C77",
+                  borderWidth: 1,
+                  marginTop: 10,
+                  borderRadius: 5,
+                }}
+              ></TextInput>
+            </View>
           ) : (
             <View>
               <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: 10 }}>
@@ -201,10 +255,10 @@ const AddressScreen = () => {
               </Text>
               <TextInput
                 value={idNo}
-                onChangeText={(text) => setIdNo + text}
+                onChangeText={(text) => setIdNo(text)}
                 style={{
                   padding: 10,
-                  borderColor: "#EA871C55",
+                  borderColor: "#EA871C77",
                   borderWidth: 1,
                   marginTop: 10,
                   borderRadius: 5,
@@ -215,6 +269,7 @@ const AddressScreen = () => {
         </View>
 
         <Pressable
+        onPress={handleAddAdress}
           style={{
             backgroundColor: "#FFC72C",
             padding: 19,
@@ -222,6 +277,7 @@ const AddressScreen = () => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 20,
+            marginBottom:30
           }}
         >
           <Text style={{ fontWeight: "bold" }}>Adres Ekle</Text>

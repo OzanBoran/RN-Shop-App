@@ -14,7 +14,7 @@ const AddAddressScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 50 }}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 50, }}>
       <View
         style={{
           padding: 10,

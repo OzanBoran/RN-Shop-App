@@ -19,6 +19,9 @@ const ProductItem = ({ item }) => {
       style={{
         marginVertical: 25,
         marginHorizontal: 7,
+        width:170,
+        borderWidth:1,
+        borderColor:"#FF8C0055",
         paddingTop: 3,
         borderRadius: 12,
         backgroundColor: "white",
@@ -37,8 +40,6 @@ const ProductItem = ({ item }) => {
         }}
         source={{ uri: item?.image }}
       />
-
-      <Text style={{ height: 1, borderColor: "#FF8C00", borderWidth: 1 }} />
 
       <Text
         numberOfLines={1}
