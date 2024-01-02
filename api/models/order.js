@@ -39,15 +39,15 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    houseNo: {
+    openAddress: {
       type: String,
       required: true,
     },
-    street: {
+    city: {
       type: String,
       required: true,
     },
-    landmark: {
+    quarter: {
       type: String,
       required: true,
     },

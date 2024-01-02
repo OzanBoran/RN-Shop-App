@@ -1,4 +1,5 @@
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,8 +12,10 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { jwtDecode } from "jwt-decode";
 import { UserType } from "../UserContext";
+import { jwtDecode } from "jwt-decode";
+import "core-js/stable/atob";
+import axios from "axios";
 
 const AddressScreen = () => {
   const navigation = useNavigation();
@@ -21,6 +24,7 @@ const AddressScreen = () => {
   const [mobileNo, setMobileNo] = useState("");
   const [openAddress, setOpenAddress] = useState("");
   const [city, setCity] = useState("");
+  const [town, setTown] = useState("");
   const [quarter, setQuarter] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [idNo, setIdNo] = useState("");
@@ -34,18 +38,61 @@ const AddressScreen = () => {
     { label: "Bireysel", value: "Bireysel" },
     { label: "Kurumsal", value: "Kurumsal" },
   ]);
-  const [userId, setUserId] = useContext(UserType);
+  const { userId, setUserId } = useContext(UserType);
 
   useEffect(() => {
-    const fetchUser = async() => {
+    const fetchUser = async () => {
       const token = await AsyncStorage.getItem("authToken");
-      const decodedToken = jwt_decode(token);
+      const decodedToken = jwtDecode(token);
       const userId = decodedToken.userId;
-    }
-  },[]);
+      setUserId(userId);
+    };
+    fetchUser();
+  }, []);
+  
+  const handleAddAdress = () => {
+    const address = {
+      name,
+      mobileNo,
+      openAddress,
+      city,
+      town,
+      quarter,
+      postalCode,
+      company,
+      taxNo,
+      taxOffice,
+      idNo,
+    };
+
+    axios
+      .post("http://192.168.2.237:8000/addresses", { userId, address })
+      .then((response) => {
+        Alert.alert("Adres başarıyla kaydedildi");
+        setName("");
+        setMobileNo("");
+        setOpenAddress("");
+        setCity("");
+        setTown("");
+        setQuarter("");
+        setPostalCode("");
+        setCompany("");
+        setTaxNo("");
+        setTaxOffice("");
+        setIdNo("");
+
+        setTimeout(() => {
+          navigation.goBack();
+        }, 500);
+      })
+      .catch((error) => {
+        Alert.alert("Hata!", "Adres oluşturulamadı.");
+        console.log("error", error);
+      });
+  };
 
   return (
-    <ScrollView style={{ marginTop: 50, }} automaticallyAdjustKeyboardInsets>
+    <ScrollView style={{ marginTop: 50 }} automaticallyAdjustKeyboardInsets>
       <View
         style={{
           padding: 10,
@@ -120,7 +167,7 @@ const AddressScreen = () => {
 
         <View style={{ marginTop: 30, marginBottom: 10 }}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Adres satırı 1
+            Adres satırı
           </Text>
           <TextInput
             value={openAddress}
@@ -142,6 +189,21 @@ const AddressScreen = () => {
           <TextInput
             value={city}
             onChangeText={(text) => setCity(text)}
+            style={{
+              padding: 10,
+              borderColor: "#EA871C77",
+              borderWidth: 1,
+              marginTop: 10,
+              borderRadius: 5,
+            }}
+          ></TextInput>
+        </View>
+
+        <View style={{ marginVertical: 10 }}>
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>İlçe</Text>
+          <TextInput
+            value={town}
+            onChangeText={(text) => setTown(text)}
             style={{
               padding: 10,
               borderColor: "#EA871C77",
@@ -182,7 +244,7 @@ const AddressScreen = () => {
           ></TextInput>
         </View>
 
-        <View style={{ marginTop:30 }} >
+        <View style={{ marginTop: 30 }}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>Fatura türü</Text>
           <DropDownPicker
             style={{
@@ -269,7 +331,7 @@ const AddressScreen = () => {
         </View>
 
         <Pressable
-        onPress={handleAddAdress}
+          onPress={handleAddAdress}
           style={{
             backgroundColor: "#FFC72C",
             padding: 19,
@@ -277,7 +339,7 @@ const AddressScreen = () => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 20,
-            marginBottom:30
+            marginBottom: 30,
           }}
         >
           <Text style={{ fontWeight: "bold" }}>Adres Ekle</Text>

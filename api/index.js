@@ -150,39 +150,37 @@ app.post("/addresses", async (req, res) => {
   try {
     const { userId, address } = req.body;
 
-    // Find the user by the user ID
+    //find the user by the Userid
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "Kullanıcı bulunamadı" });
     }
 
-    // Add the new address to the user's adresses array
+    //add the new address to the user's addresses array
     user.addresses.push(address);
 
-    // Save the updated user in the backend
+    //save the updated user in te backend
     await user.save();
 
-    res.status(200).json({message:"Adres başarıyla eklendi"})
-
+    res.status(200).json({ message: "Adres başarıyla oluşturuldu" });
   } catch (error) {
-    res.status(500).json({ message: "Adresi eklerken hata olustu" });
+    res.status(500).json({ message: "Adres eklenemedi" });
   }
 });
 
 // Endpoint to get all the addresses of a particular user
-app.get("/addresses/:userId", async(req,res) => {
-  try{
+app.get("/addresses/:userId", async (req, res) => {
+  try {
     const userId = req.params.userId;
 
-    const user = await User.findById(userId)
-    if(!user) {
-      return res.status(404).json({message:"Kullanıcı bulunamadı"})
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Kullanıcı bulunamadı" });
     }
 
     const addresses = user.addresses;
-    res.status(200).json({addresses})
-
-  } catch(error) {
-    res.status(500).json({message:"Adresler yüklenirken bir hata oluştu"})
+    res.status(200).json({ addresses });
+  } catch (error) {
+    res.status(500).json({ message: "Adresler yüklenirken bir hata oluştu" });
   }
-})
+});

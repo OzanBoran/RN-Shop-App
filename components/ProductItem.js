@@ -17,9 +17,9 @@ const ProductItem = ({ item }) => {
   return (
     <Pressable
       style={{
-        marginVertical: 25,
+        marginVertical: 7,
         marginHorizontal: 7,
-        width:170,
+        width:180,
         borderWidth:1,
         borderColor:"#FF8C0055",
         paddingTop: 3,

@@ -21,16 +21,17 @@ const userSchema = new mongoose.Schema({
   verificationToken: String,
   addresses: [
     {
-      name: {
-        name: String,
-        mobileNo: String,
-        houseNo: String,
-        street: String,
-        landmark: String,
-        city: String,
-        country: String,
-        postalCode: String,
-      },
+      name: String,
+      mobileNo: String,
+      openAddress: String,
+      city: String,
+      town: String,
+      quarter: String,
+      postalCode: String,
+      company: String,
+      taxNo: String,
+      taxOffice: String,
+      idNo: String,
     },
   ],
   orders: [

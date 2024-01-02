@@ -17,6 +17,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { BottomModal, ModalContent, SlideAnimation } from "react-native-modals";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserType } from "../UserContext";
+import { jwtDecode } from "jwt-decode";
 
 const HomeScreen = () => {
   const list = [
@@ -228,7 +231,11 @@ const HomeScreen = () => {
   const [products, setProducts] = useState([]);
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
+  const [addresses, setAddresses] = useState([]);
   const [category, setCategory] = useState("jewellery");
+  const { userId, setUserId } = useContext(UserType);
+  const [selectedAddress, setSelectedAddress] = useState("");
+  console.log(selectedAddress);
   const [items, setItems] = useState([
     { label: "Men's clothing", value: "men's clothing" },
     { label: "jewelery", value: "jewelery" },
@@ -251,6 +258,35 @@ const HomeScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (userId) {
+      fetchAddresses();
+    }
+  }, [userId, modalVisible]);
+
+  const fetchAddresses = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.2.237:8000/addresses/${userId}`
+      );
+      const { addresses } = response.data;
+
+      setAddresses(addresses);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = await AsyncStorage.getItem("authToken");
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.userId;
+      setUserId(userId);
+    };
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -309,9 +345,15 @@ const HomeScreen = () => {
                 setModalVisible(!modalVisible);
               }}
             >
-              <Text style={{ fontSize: 13, fontWeight: 500 }}>
-                Deliver to Ozan - Marmaris 48700
-              </Text>
+              {selectedAddress ? (
+                <Text>
+                  Gönderim: {selectedAddress?.name} - {selectedAddress?.city} {selectedAddress?.postalCode}
+                </Text>
+              ) : (
+                <Text style={{ fontSize:13, fontWeight:500 }}>
+                  Adres ekleyin
+                </Text>
+              )}
             </Pressable>
 
             <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
@@ -367,7 +409,7 @@ const HomeScreen = () => {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {offers.map((item, index) => (
               <Pressable
-              key={index}
+                key={index}
                 onPress={() =>
                   navigation.navigate("Info", {
                     id: item.id,
@@ -427,7 +469,7 @@ const HomeScreen = () => {
           >
             {karcher.map((item, index) => (
               <Pressable
-              key={index}
+                key={index}
                 onPress={() =>
                   navigation.navigate("Info", {
                     id: item.id,
@@ -524,6 +566,57 @@ const HomeScreen = () => {
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {/* Already added addresses */}
+            {addresses?.map((item, index) => (
+              <Pressable
+                onPress={() => setSelectedAddress(item)}
+                style={{
+                  width: 140,
+                  height: 140,
+                  borderColor: "#EA871C",
+                  borderWidth: 1,
+                  padding: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  marginRight: 15,
+                  backgroundColor: selectedAddress ? "#EA871C22" : "white",
+                }}
+              >
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 3 }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    {item?.name}
+                  </Text>
+                  <Ionicons name="ios-location" size={20} color="black" />
+                </View>
+                <Text
+                  numberOfLines={1}
+                  style={{ fontSize: 13, width: 130, textAlign: "center" }}
+                >
+                  {item?.quarter}, {item?.openAddress}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={{ fontSize: 13, fontWeight: 500 }}
+                >
+                  {item?.town}/{item?.city}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={{ fontSize: 13, width: 130, textAlign: "center" }}
+                >
+                  {" "}
+                  {item?.postalCode}{" "}
+                </Text>
+              </Pressable>
+            ))}
 
             <Pressable
               onPress={() => {
@@ -548,8 +641,7 @@ const HomeScreen = () => {
                   fontWeight: 500,
                 }}
               >
-                {" "}
-                Yeni adres ekle{" "}
+                Adresleri Yönet
               </Text>
             </Pressable>
           </ScrollView>
