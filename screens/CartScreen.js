@@ -10,7 +10,12 @@ import {
 import React from "react";
 import { Ionicons, AntDesign, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  decrementQuantity,
+  incrementQuantity,
+  removeFromCart,
+} from "../redux/CartReducer";
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -21,7 +26,19 @@ const CartScreen = () => {
   const total = cart
     ?.map((item) => item.price * item.quantity)
     .reduce((curr, prev) => curr + prev, 0);
-  console.log(total);
+
+  const dispatch = useDispatch();
+  const increaseQuantity = (item) => {
+    dispatch(incrementQuantity(item));
+  };
+
+  const decreaseQuantity = (item) => {
+    dispatch(decrementQuantity(item));
+  };
+
+  const deleteFromCart = (item) => {
+    dispatch(removeFromCart(item));
+  };
 
   return (
     <ScrollView style={{ marginTop: 50, flex: 1, backgroundColor: "white" }}>
@@ -60,7 +77,7 @@ const CartScreen = () => {
 
       <View style={{ padding: 10, flexDirection: "row", alignItems: "center" }}>
         <Text style={{ fontSize: 18, fontWeight: 400 }}>Toplam : </Text>
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>{total} TL</Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>{total.toFixed(2)} TL</Text>
       </View>
 
       <Pressable
@@ -120,7 +137,7 @@ const CartScreen = () => {
                 <Text
                   style={{ fontSize: 20, fontWeight: "bold", marginTop: 6 }}
                 >
-                  {item?.price}
+                  {item?.price} TL
                 </Text>
               </View>
             </Pressable>
@@ -143,16 +160,36 @@ const CartScreen = () => {
                   borderRadius: 7,
                 }}
               >
-                <Pressable
-                  style={{
-                    backgroundColor: "#D8D8D8",
-                    padding: 7,
-                    borderTopLeftRadius: 6,
-                    borderBottomLeftRadius: 6,
-                  }}
-                >
-                  <AntDesign name="delete" size={24} color="black" />
-                </Pressable>
+                {item?.quantity == 1 ? (
+                  <Pressable
+                    onPress={() => {
+                      deleteFromCart(item);
+                    }}
+                    style={{
+                      backgroundColor: "#D8D8D8",
+                      padding: 7,
+                      borderTopLeftRadius: 6,
+                      borderBottomLeftRadius: 6,
+                    }}
+                  >
+                    <AntDesign name="delete" size={24} color="black" />
+                  </Pressable>
+                ) : (
+                  <Pressable
+                    onPress={() => {
+                      decreaseQuantity(item);
+                    }}
+                    style={{
+                      backgroundColor: "#D8D8D8",
+                      padding: 7,
+                      borderTopLeftRadius: 6,
+                      borderBottomLeftRadius: 6,
+                    }}
+                  >
+                    <Feather name="minus" size={24} color="black" />
+                  </Pressable>
+                )}
+
                 <Pressable
                   style={{
                     backgroundColor: "white",
@@ -163,6 +200,7 @@ const CartScreen = () => {
                   <Text>{item?.quantity}</Text>
                 </Pressable>
                 <Pressable
+                  onPress={() => increaseQuantity(item)}
                   style={{
                     backgroundColor: "#D8D8D8",
                     padding: 7,
@@ -175,6 +213,7 @@ const CartScreen = () => {
               </View>
 
               <Pressable
+              onPress={() => deleteFromCart(item)}
                 style={{
                   backgroundColor: "white",
                   paddingHorizontal: 8,
@@ -189,9 +228,9 @@ const CartScreen = () => {
             </Pressable>
 
             <Pressable>
-                <Pressable>
-                    <Text></Text>
-                </Pressable>
+              <Pressable>
+                <Text></Text>
+              </Pressable>
             </Pressable>
           </View>
         ))}

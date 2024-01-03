@@ -235,7 +235,6 @@ const HomeScreen = () => {
   const [category, setCategory] = useState("jewellery");
   const { userId, setUserId } = useContext(UserType);
   const [selectedAddress, setSelectedAddress] = useState("");
-  console.log(selectedAddress);
   const [items, setItems] = useState([
     { label: "Men's clothing", value: "men's clothing" },
     { label: "jewelery", value: "jewelery" },
@@ -347,10 +346,11 @@ const HomeScreen = () => {
             >
               {selectedAddress ? (
                 <Text>
-                  Gönderim: {selectedAddress?.name} - {selectedAddress?.city} {selectedAddress?.postalCode}
+                  Gönderim: {selectedAddress?.name} - {selectedAddress?.city}{" "}
+                  {selectedAddress?.postalCode}
                 </Text>
               ) : (
-                <Text style={{ fontSize:13, fontWeight:500 }}>
+                <Text style={{ fontSize: 13, fontWeight: 500 }}>
                   Adres ekleyin
                 </Text>
               )}
@@ -569,6 +569,7 @@ const HomeScreen = () => {
             {addresses?.map((item, index) => (
               <Pressable
                 onPress={() => setSelectedAddress(item)}
+                key={index}
                 style={{
                   width: 140,
                   height: 140,
