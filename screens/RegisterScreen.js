@@ -34,7 +34,6 @@ const RegisterScreen = () => {
   axios
     .post("http://192.168.2.237:8000/register", user)
     .then((response) => {
-      console.log(response);
       successAlert;
       setName("");
       setPassword("");

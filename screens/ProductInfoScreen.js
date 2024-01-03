@@ -37,7 +37,6 @@ const ProductInfoScreen = () => {
   };
 
   const cart = useSelector((state) => state.cart.cart);
-  console.log(cart);
 
   return (
     <ScrollView

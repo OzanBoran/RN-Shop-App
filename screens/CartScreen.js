@@ -19,7 +19,6 @@ import {
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
-  console.log(cart);
 
   const navigation = useNavigation();
 
@@ -77,22 +76,41 @@ const CartScreen = () => {
 
       <View style={{ padding: 10, flexDirection: "row", alignItems: "center" }}>
         <Text style={{ fontSize: 18, fontWeight: 400 }}>Toplam : </Text>
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>{total.toFixed(2)} TL</Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+          {total.toFixed(2)} TL
+        </Text>
       </View>
 
-      <Pressable
-        style={{
-          backgroundColor: "#FFC72C",
-          padding: 10,
-          borderRadius: 5,
-          justifyContent: "center",
-          alignItems: "center",
-          marginHorizontal: 10,
-          marginTop: 10,
-        }}
-      >
-        <Text>Alışverişi Tamamla ({cart.length} ürün)</Text>
-      </Pressable>
+      {cart.length > 0 ? (
+        <Pressable
+          onPress={() => navigation.navigate("Confirm")}
+          style={{
+            backgroundColor: "#FFC72C",
+            padding: 10,
+            borderRadius: 5,
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 10,
+            marginTop: 10,
+          }}
+        >
+          <Text>Alışverişi Tamamla ({cart.length} ürün)</Text>
+        </Pressable>
+      ) : (
+        <Pressable
+          style={{
+            backgroundColor: "#FFC72C",
+            padding: 10,
+            borderRadius: 5,
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 10,
+            marginTop: 10,
+          }}
+        >
+          <Text>Sepetinizde ürün bulunmamakta</Text>
+        </Pressable>
+      )}
 
       <Text
         style={{
@@ -213,7 +231,7 @@ const CartScreen = () => {
               </View>
 
               <Pressable
-              onPress={() => deleteFromCart(item)}
+                onPress={() => deleteFromCart(item)}
                 style={{
                   backgroundColor: "white",
                   paddingHorizontal: 8,

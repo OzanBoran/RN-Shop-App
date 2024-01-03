@@ -44,7 +44,6 @@ export default function LoginScreen() {
     axios
       .post("http://192.168.2.237:8000/login", user)
       .then((response) => {
-        console.log(response);
         const token = response.data.token;
         AsyncStorage.setItem("authToken", token);
         navigation.replace("Main");

@@ -6,9 +6,9 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { UserType } from "../UserContext";
 
@@ -33,6 +33,13 @@ const AddAddressScreen = () => {
       console.log("error", error);
     }
   };
+
+  // Refresh the addresses when the component comes to the focus i.e when we navigate back
+  useFocusEffect(
+    useCallback(() => {
+      fetchAddresses();
+    })
+  )
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 50 }}>
