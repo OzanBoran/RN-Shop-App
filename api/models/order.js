@@ -47,6 +47,10 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    town: {
+      type: String,
+      required: true,
+    },
     quarter: {
       type: String,
       required: true,

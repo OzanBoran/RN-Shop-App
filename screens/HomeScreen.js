@@ -553,7 +553,7 @@ const HomeScreen = () => {
         visible={modalVisible}
         onTouchOutside={() => setModalVisible(!modalVisible)}
       >
-        <ModalContent style={{ width: "100%", height: 400 }}>
+        <ModalContent style={{ width: "100%", height: 300 }}>
           <View style={{ marginBottom: 8 }}>
             <Text style={{ fontSize: 16, fontWeight: 500 }}>
               Konumunuzu seçin
@@ -646,26 +646,6 @@ const HomeScreen = () => {
               </Text>
             </Pressable>
           </ScrollView>
-
-          <View style={{ flexDirection: "column", gap: 7, marginBottom: 30 }}>
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-            >
-              <Ionicons name="ios-locate" size={22} color="#EA871C" />
-              <Text style={{ color: "#EA871C", fontWeight: 400 }}>
-                Mevcut konumumu kullan
-              </Text>
-            </View>
-
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-            >
-              <Ionicons name="ios-location-sharp" size={22} color="#EA871C" />
-              <Text style={{ color: "#EA871C", fontWeight: 400 }}>
-                Posta kodu girin
-              </Text>
-            </View>
-          </View>
         </ModalContent>
       </BottomModal>
     </>

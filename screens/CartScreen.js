@@ -18,9 +18,9 @@ import {
 } from "../redux/CartReducer";
 
 const CartScreen = () => {
-  const cart = useSelector((state) => state.cart.cart);
-
   const navigation = useNavigation();
+
+  const cart = useSelector((state) => state.cart.cart);
 
   const total = cart
     ?.map((item) => item.price * item.quantity)
