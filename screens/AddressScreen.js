@@ -98,7 +98,7 @@ const AddressScreen = () => {
           padding: 10,
           flexDirection: "row",
           alignItems: "center",
-          backgroundColor: "#EA871C",
+          backgroundColor: "#EA871C55",
         }}
       >
         <Pressable onPress={() => navigation.goBack()}>

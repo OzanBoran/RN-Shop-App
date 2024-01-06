@@ -14,6 +14,7 @@ import CartScreen from "../screens/CartScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import ConfirmationScreen from "../screens/ConfirmationScreen";
 import OrderScreen from "../screens/OrderScreen";
+import MenuScreen from "../screens/MenuScreen";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -52,7 +53,6 @@ const StackNavigator = () => {
               fontSize: 14,
               fontWeight: "bold",
             },
-            headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
                 <Ionicons name="ios-person" size={24} color="#EA871C" />
@@ -78,6 +78,26 @@ const StackNavigator = () => {
                 <FontAwesome5 name="shopping-cart" size={24} color="#EA871C" />
               ) : (
                 <Feather name="shopping-cart" size={24} color="#EA871C" />
+              ),
+          }}
+        />
+
+        <Tab.Screen
+          name="Menu"
+          component={MenuScreen}
+          options={{
+            tabBarLabel: "Menü",
+            tabBarLabelStyle: {
+              color: "#EA871C",
+              fontSize: 14,
+              fontWeight: "bold",
+            },
+            headerShown: false,
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <AntDesign name="menu-fold" size={24} color="#EA871C" />
+              ) : (
+                <AntDesign name="menu-unfold" size={24} color="#EA871C" />
               ),
           }}
         />

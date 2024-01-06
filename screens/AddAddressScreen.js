@@ -48,31 +48,11 @@ const AddAddressScreen = () => {
           padding: 10,
           flexDirection: "row",
           alignItems: "center",
-          backgroundColor: "#EA871C",
+          backgroundColor: "#EA871C55",
         }}
       >
         <Pressable onPress={() => navigation.goBack()}>
           <AntDesign name="arrowleft" size={24} color="white" />
-        </Pressable>
-        <Pressable
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginHorizontal: 7,
-            gap: 10,
-            backgroundColor: "white",
-            borderRadius: 3,
-            height: 38,
-            flex: 1,
-          }}
-        >
-          <Ionicons
-            style={{ paddingLeft: 7 }}
-            name="ios-search"
-            size={22}
-            color="#EA871C"
-          />
-          <TextInput placeholder="Ürün Ara..." />
         </Pressable>
       </View>
 
@@ -144,52 +124,7 @@ const AddAddressScreen = () => {
                 {" "}
                 Telefon Numarası: {item?.mobileNo}{" "}
               </Text>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 10,
-                  marginTop: 7,
-                }}
-              >
-                <Pressable
-                  style={{
-                    backgroundColor:"#F5F5F5",
-                    paddingHorizontal: 10,
-                    paddingVertical: 6,
-                    borderRadius: 5,
-                    borderWidth: 0.9,
-                    borderColor: "#EA871C55",
-                  }}
-                >
-                  <Text>Düzenle</Text>
-                </Pressable>
-                <Pressable
-                  style={{
-                    backgroundColor:"#F5F5F5",
-                    paddingHorizontal: 10,
-                    paddingVertical: 6,
-                    borderRadius: 5,
-                    borderWidth: 0.9,
-                    borderColor: "#EA871C55",
-                  }}
-                >
-                  <Text>Kaldır</Text>
-                </Pressable>
-                <Pressable
-                  style={{
-                    backgroundColor:"#F5F5F5",
-                    paddingHorizontal: 10,
-                    paddingVertical: 6,
-                    borderRadius: 5,
-                    borderWidth: 0.9,
-                    borderColor: "#EA871C55",
-                  }}
-                >
-                  <Text>Varsayılan Ayarla</Text>
-                </Pressable>
-              </View>
+              
             </Pressable>
           ))}
         </Pressable>

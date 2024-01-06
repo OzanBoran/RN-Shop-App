@@ -301,7 +301,7 @@ const HomeScreen = () => {
               padding: 10,
               flexDirection: "row",
               alignItems: "center",
-              backgroundColor: "#EA871C",
+              backgroundColor: "#EA871C55",
             }}
           >
             <Pressable
@@ -320,7 +320,7 @@ const HomeScreen = () => {
                 style={{ paddingLeft: 7 }}
                 name="ios-search"
                 size={22}
-                color="#EA871C"
+                color="#EA871Ccc"
               />
               <TextInput placeholder="Ürün Ara..." />
             </Pressable>
@@ -335,7 +335,7 @@ const HomeScreen = () => {
               alignItems: "center",
               gap: 5,
               padding: 10,
-              backgroundColor: "#FFB669",
+              backgroundColor: "#FFB66955",
             }}
           >
             <Ionicons name="ios-location-outline" size={24} color="black" />
@@ -613,8 +613,7 @@ const HomeScreen = () => {
                   numberOfLines={1}
                   style={{ fontSize: 13, width: 130, textAlign: "center" }}
                 >
-                  {" "}
-                  {item?.postalCode}{" "}
+                  {item?.postalCode}
                 </Text>
               </Pressable>
             ))}

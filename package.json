@@ -4,9 +4,10 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
@@ -18,15 +19,18 @@
     "core-js": "^3.35.0",
     "deprecated-react-native-prop-types": "^5.0.0",
     "expo": "~49.0.15",
+    "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
+    "expo-system-ui": "~2.4.0",
+    "gradle": "^1.2.4",
     "jwt-decode": "^4.0.0",
-    "lottie-react-native": "^5.1.6",
+    "lottie-react-native": "5.1.6",
+    "patch-package": "^8.0.0",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-image-slider-box": "^2.0.7",
     "react-native-modals": "^0.22.3",
-    "react-native-razorpay": "^2.3.0",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-redux": "^9.0.4"

@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { UserType } from "../UserContext";
 import { Entypo, Ionicons, FontAwesome5 } from "@expo/vector-icons";
@@ -54,7 +54,7 @@ const ConfirmationScreen = () => {
   };
 
   const dispatch = useDispatch();
-  
+
   const [selectedAddress, setSelectedAddress] = useState("");
   const [selectedOption, setSelectedOption] = useState(false);
 
@@ -66,34 +66,54 @@ const ConfirmationScreen = () => {
   /*
   const pay = async () => {
     try{
+      const options = {
+        description:"Adding to the wallet",
+        currency:"TRY",
+        name::"Dogus-Yapi",
+        key:"************",
+        amount: total * 100,
+        prefill:{
+          email:"****@paytr.com",
+          contact:"123654789",
+          name:"PayTr Software"
+      },
+        theme:{color:"#FFC72C55"}
+    };
+
+    const data = await PayTrCheckout.open(options);
+
+    const orderData = {}
 
     } catch(error){
       console.log("Error:", error)
     }
   }
 */
-  const handlePlaceOrder = async() => {
-    try{
+  const handlePlaceOrder = async () => {
+    try {
       const orderData = {
-        userId:userId,
-        cartItems:cart,
+        userId: userId,
+        cartItems: cart,
         totalPrice: total,
-        shippingAddress:selectedAddress,
-        paymentMethod: selectedOption
-      }
+        shippingAddress: selectedAddress,
+        paymentMethod: selectedOption,
+      };
 
-      const response = await axios.post("http://192.168.2.237:8000/orders", orderData)
-      if(response.status === 200) {
+      const response = await axios.post(
+        "http://192.168.2.237:8000/orders",
+        orderData
+      );
+      if (response.status === 200) {
         navigation.navigate("Order");
         dispatch(cleanCart());
-        console.log("Order created succesfully", response.data.order)
+        console.log("Order created succesfully", response.data.order);
       } else {
-        console.log("ERROR",error)
+        console.log("ERROR", error);
       }
-    } catch(error) {
-      console.log("Error", error)
+    } catch (error) {
+      console.log("Error", error);
     }
-  }
+  };
 
   return (
     <ScrollView style={{ marginTop: 55 }}>
@@ -168,6 +188,7 @@ const ConfirmationScreen = () => {
           <Pressable>
             {addresses?.map((item, index) => (
               <Pressable
+                onPress={() => setSelectedAddress(item)}
                 key={index}
                 style={{
                   borderWidth: 1,
@@ -184,15 +205,10 @@ const ConfirmationScreen = () => {
                 {selectedAddress && selectedAddress._id === item?._id ? (
                   <FontAwesome5 name="dot-circle" size={20} color="#EA871CAA" />
                 ) : (
-                  <Entypo
-                    onPress={() => setSelectedAddress(item)}
-                    name="circle"
-                    size={20}
-                    color="#EA871C55"
-                  />
+                  <Entypo name="circle" size={20} color="#EA871C55" />
                 )}
 
-                <View style={{ marginLeft: 6 }}>
+                <View>
                   <View
                     style={{
                       flexDirection: "row",
@@ -201,30 +217,27 @@ const ConfirmationScreen = () => {
                     }}
                   >
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                      {" "}
-                      {item?.name}{" "}
+                      {item?.name}
                     </Text>
                     <Ionicons name="ios-location" size={24} color="black" />
                   </View>
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    {" "}
-                    {item?.quarter}, {item?.openAddress}{" "}
+                    {item?.quarter}
                   </Text>
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    {" "}
-                    {item?.town}/{item?.city}{" "}
+                    {item?.openAddress}
                   </Text>
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    {" "}
-                    {item?.postalCode}{" "}
+                    {item?.town}/{item?.city}
                   </Text>
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    {" "}
-                    Türkiye{" "}
+                    {item?.postalCode}
                   </Text>
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    {" "}
-                    Telefon Numarası: {item?.mobileNo}{" "}
+                    Türkiye
+                  </Text>
+                  <Text style={{ fontSize: 15, color: "#181818" }}>
+                    Telefon Numarası: {item?.mobileNo}
                   </Text>
 
                   <View>
@@ -272,7 +285,7 @@ const ConfirmationScreen = () => {
             }}
           >
             {selectedOption ? (
-              <FontAwesome5 name="dot-circle" size={20} color="#EA871C77" />
+              <FontAwesome5 name="dot-circle" size={24} color="#EA871C77" />
             ) : (
               <Entypo
                 onPress={() => setSelectedOption("card")}
@@ -281,7 +294,7 @@ const ConfirmationScreen = () => {
                 color="#EA871C55"
               />
             )}
-            <Text>Kredi / Banka Kartı</Text>
+            <Text style={{ fontSize: 15 }}>Kredi / Banka Kartı</Text>
           </View>
 
           {!selectedOption ? (
@@ -435,8 +448,8 @@ const ConfirmationScreen = () => {
                 style={{
                   flexDirection: "column",
                   marginTop: 8,
-                  marginBottom:24,
-                  paddingRight:18
+                  marginBottom: 24,
+                  paddingRight: 18,
                 }}
               >
                 <Text
@@ -444,14 +457,13 @@ const ConfirmationScreen = () => {
                     fontWeight: 500,
                     marginVertical: 5,
                     fontSize: 16,
-                    marginRight: 10,
                   }}
                 >
                   Son Kullanma Tarihi
                 </Text>
-                <View style={{ flexDirection:"row" }} >
-                {<DatePickerMonth />}
-                {<DatePickerYear />}
+                <View style={{ flexDirection: "row", marginRight: 4 }}>
+                  {<DatePickerMonth />}
+                  {<DatePickerYear />}
                 </View>
               </View>
 
@@ -474,13 +486,14 @@ const ConfirmationScreen = () => {
                     height: 35,
                     width: "20%",
                   }}
+                  maxLength={3}
                 />
               </View>
             </View>
           </View>
 
           <Pressable
-          onPress={handlePlaceOrder}
+            onPress={handlePlaceOrder}
             style={{
               backgroundColor: "#FFC72C",
               padding: 10,

@@ -46,7 +46,7 @@ const CartScreen = () => {
           padding: 10,
           flexDirection: "row",
           alignItems: "center",
-          backgroundColor: "#EA871C",
+          backgroundColor: "#EA871C55",
         }}
       >
         <Pressable onPress={() => navigation.goBack()}>
@@ -68,7 +68,7 @@ const CartScreen = () => {
             style={{ paddingLeft: 7 }}
             name="ios-search"
             size={22}
-            color="#EA871C"
+            color="#EA871Ccc"
           />
           <TextInput placeholder="Ürün Ara..." />
         </Pressable>
