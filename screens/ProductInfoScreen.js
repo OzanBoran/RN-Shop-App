@@ -9,14 +9,11 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  AntDesign,
-} from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/CartReducer";
+import { convert } from "html-to-text";
 
 const ProductInfoScreen = () => {
   const route = useRoute();
@@ -37,6 +34,15 @@ const ProductInfoScreen = () => {
   };
 
   const cart = useSelector((state) => state.cart.cart);
+
+  const productText = (par) => {
+    const options = {
+      wordwrap: 130,
+      // ...
+    };
+    let text = convert(par, options);
+    return text;
+  };
 
   return (
     <ScrollView
@@ -78,88 +84,19 @@ const ProductInfoScreen = () => {
       </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {route.params.carouselImages.map((item, index) => (
-          <ImageBackground
-            style={{ width, height, marginTop: 25, resizeMode: "contain" }}
-            source={{ uri: item }}
-            key={index}
-          >
-            <View
-              style={{
-                padding: 10,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 30,
-                  backgroundColor: "#C60C30",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    fontWeight: 600,
-                    fontSize: 12,
-                  }}
-                >
-                  20% indirim
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: 45,
-                  height: 45,
-                  borderRadius: 30,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="share-variant"
-                  size={24}
-                  color="black"
-                />
-              </View>
-            </View>
-
-            <View
-              style={{
-                width: 45,
-                height: 45,
-                borderRadius: 50,
-                borderWidth: 2,
-                borderColor: "red",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                marginTop: "auto",
-                marginLeft: 15,
-                marginBottom: 20,
-              }}
-            >
-              <Ionicons name="ios-heart-outline" size={28} color="red" />
-            </View>
-          </ImageBackground>
-        ))}
+        <ImageBackground
+          style={{ width, height, marginTop: 25, resizeMode: "contain" }}
+          source={{ uri: route?.params?.products_picture }}
+        ></ImageBackground>
       </ScrollView>
 
       <View style={{ padding: 10 }}>
         <Text style={{ fontSize: 15, fontWeight: 500 }}>
-          {route?.params?.title}
+          {route?.params?.products_name}
         </Text>
 
         <Text style={{ fontSize: 18, fontWeight: 600, marginTop: 6 }}>
-          {route?.params?.price}
+          {route?.params?.products_price} TL
         </Text>
       </View>
 
@@ -167,7 +104,7 @@ const ProductInfoScreen = () => {
 
       <View style={{ padding: 10 }}>
         <Text style={{ fontSize: 15, fontWeight: "bold", marginVertical: 5 }}>
-          Toplam {route.params.price}
+          Toplam {route.params.products_price} TL
         </Text>
         <Text style={{ color: "red" }}>
           250 TL ve üzeri alışverişlerde ücretsiz teslim.
@@ -213,20 +150,17 @@ const ProductInfoScreen = () => {
           <Text>Sepete ekle</Text>
         )}
       </Pressable>
-
-      <Pressable
+      <Text style={{ height: 1, borderColor: "#D0D0D0", borderWidth: 1 }} />
+      <Text
         style={{
-          backgroundColor: "#FF982C",
-          padding: 10,
-          borderRadius: 20,
-          justifyContent: "center",
-          alignItems: "center",
+          fontSize: 15,
+          fontWeight: "bold",
+          marginVertical: 5,
           marginHorizontal: 10,
-          marginVertical: 10,
         }}
       >
-        <Text>Hemen Al</Text>
-      </Pressable>
+        Toplam {productText(route.params.products_text)}
+      </Text>
     </ScrollView>
   );
 };

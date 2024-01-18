@@ -16,8 +16,8 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [members_email, setMembers_email] = useState("");
+  const [members_pass, setMembers_pass] = useState("");
 
   const navigation = useNavigation();
 
@@ -33,25 +33,41 @@ export default function LoginScreen() {
       }
     };
     checkLoginStatus();
-  });
+  }, []);
 
-  const handleLogin = () => {
-    const user = {
-      email: email,
-      password: password,
-    };
-
-    axios
-      .post("http://192.168.2.237:8000/login", user)
-      .then((response) => {
-        const token = response.data.token;
-        AsyncStorage.setItem("authToken", token);
-        navigation.replace("Main");
-      })
-      .catch((error) => {
-        Alert.alert("Giriş yaparken bir hata oluştu", "Hatalı email");
-        console.log(error);
+  const handleLogin = async () => {
+    try {
+      // Make a POST request to server's login endpoint
+      const response = await axios.post("http://192.168.2.237:8000/login", {
+        members_email,
+        members_pass,
       });
+
+      // Check if the login was successful
+      if (response.data.success) {
+        // Save the authentication token to AsyncStorage
+        const token = response.data.authToken;
+        await AsyncStorage.setItem("authToken", token);
+        // Navigate to the main screen
+        navigation.replace("Main");
+       
+      } else {
+        const errorMessage =
+        console.log("Login failed. Server message:", errorMessage);
+        // Display an error message if login fails
+        Alert.alert("Login Failed", errorMessage);
+      }
+    } catch (error) {
+      // Log the full response data and details for debugging
+      console.error("Error during login:", error.message);
+      if (error.response) {
+        console.error("Response Status:", error.response.status);
+        console.error("Response Data:", error.response.data);
+      }
+
+      // Handle network errors or other exceptions
+      Alert.alert("Error", "An error occurred during login.");
+    }
   };
 
   return (
@@ -105,13 +121,13 @@ export default function LoginScreen() {
                 color="#EA871C"
               />
               <TextInput
-                value={email}
-                onChangeText={(text) => setEmail(text)}
+                value={members_email}
+                onChangeText={(text) => setMembers_email(text)}
                 style={{
                   color: "black",
                   marginVertical: 10,
                   width: 300,
-                  fontSize: email ? 16 : 16,
+                  fontSize: members_email ? 16 : 16,
                 }}
                 placeholder="Email Adresiniz"
               />
@@ -136,14 +152,14 @@ export default function LoginScreen() {
                 color="#EA871C"
               />
               <TextInput
-                value={password}
-                onChangeText={(text) => setPassword(text)}
+                value={members_pass}
+                onChangeText={(text) => setMembers_pass(text)}
                 secureTextEntry={true}
                 style={{
                   color: "black",
                   marginVertical: 10,
                   width: 300,
-                  fontSize: password ? 16 : 16,
+                  fontSize: members_pass ? 16 : 16,
                 }}
                 placeholder="Şifre"
               />
@@ -155,12 +171,7 @@ export default function LoginScreen() {
               flexDirection: "row",
               justifyContent: "space-between",
             }}
-          >
-            <Text>Beni Hatırla</Text>
-            <Text style={{ color: "red", fontWeight: 500 }}>
-              Şifremi Unuttum
-            </Text>
-          </View>
+          ></View>
           <View style={{ marginTop: 80 }} />
           <Pressable
             onPress={handleLogin}

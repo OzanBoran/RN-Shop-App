@@ -16,7 +16,7 @@ const AddAddressScreen = () => {
   const navigation = useNavigation();
 
   const [addresses, setAddresses] = useState([]);
-  const { userId, setUserId } = useContext(UserType);
+  const { memberId, setMemberId } = useContext(UserType);
   useEffect(() => {
     fetchAddresses();
   }, []);
@@ -24,7 +24,7 @@ const AddAddressScreen = () => {
   const fetchAddresses = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.2.237:8000/addresses/${userId}`
+        `http://192.168.2.237:8000/addresses/${memberId}`
       );
       const { addresses } = response.data;
 

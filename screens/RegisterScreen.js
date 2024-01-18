@@ -15,29 +15,32 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 const RegisterScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [members_email, setMembers_email] = useState("");
+  const [members_pass, setMembers_pass] = useState("");
 
-  const [name, setName] = useState("");
+  const [members_name, setMembers_name] = useState("");
+  const [members_surname, setMembers_surname] = useState("");
 
   const navigation = useNavigation();
 
   const handleRegister = () => {
-    const user = {
-      name: name,
-      email: email,
-      password: password,
+    const member = {
+      members_name: members_name,
+      members_surname: members_surname,
+      members_email: members_email,
+      members_pass: members_pass,
     };
 
   // Send a post request to the backend API
   const successAlert = Alert.alert("Kayıt başarılı!", "Hesabınız başarıyla oluşturuldu.");
   axios
-    .post("http://192.168.2.237:8000/register", user)
+    .post("http://192.168.2.237:8000/register", member)
     .then((response) => {
       successAlert;
-      setName("");
-      setPassword("");
-      setEmail("");
+      setMembers_name("");
+      setMembers_surname("");
+      setMembers_pass("");
+      setMembers_email("");
     })
     .catch((error) => {
       Alert.alert(
@@ -60,12 +63,12 @@ const RegisterScreen = () => {
       </View>
 
       <KeyboardAvoidingView>
-        <View style={{ marginTop: 70 }}>
+        <View style={{ marginTop: 50 }}>
           <View style={{ alignItems: "center" }}>
             <View
               style={{
                 flexDirection: "row",
-                marginTop: 25,
+                marginTop: 15,
                 alignItems: "center",
               }}
             >
@@ -89,6 +92,35 @@ const RegisterScreen = () => {
                 backgroundColor: "#FFD580",
                 paddingVertical: 5,
                 borderRadius: 5,
+                marginTop: 20,
+              }}
+            >
+              <Ionicons
+                style={{ marginLeft: 8 }}
+                name="ios-person"
+                size={24}
+                color="#EA871C"
+              />
+              <TextInput
+                value={members_name}
+                onChangeText={(text) => setMembers_name(text)}
+                style={{
+                  color: "black",
+                  marginVertical: 10,
+                  width: 300,
+                  fontSize: members_name ? 16 : 16,
+                }}
+                placeholder="Adınız"
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 5,
+                backgroundColor: "#FFD580",
+                paddingVertical: 5,
+                borderRadius: 5,
                 marginTop: 30,
               }}
             >
@@ -99,15 +131,15 @@ const RegisterScreen = () => {
                 color="#EA871C"
               />
               <TextInput
-                value={name}
-                onChangeText={(text) => setName(text)}
+                value={members_surname}
+                onChangeText={(text) => setMembers_surname(text)}
                 style={{
                   color: "black",
                   marginVertical: 10,
                   width: 300,
-                  fontSize: name ? 16 : 16,
+                  fontSize: members_surname ? 16 : 16,
                 }}
-                placeholder="Adınız ve Soyadınız"
+                placeholder="Soyadınız"
               />
             </View>
             <View
@@ -128,13 +160,13 @@ const RegisterScreen = () => {
                 color="#EA871C"
               />
               <TextInput
-                value={email}
-                onChangeText={(text) => setEmail(text)}
+                value={members_email}
+                onChangeText={(text) => setMembers_email(text)}
                 style={{
                   color: "black",
                   marginVertical: 10,
                   width: 300,
-                  fontSize: email ? 16 : 16,
+                  fontSize: members_email ? 16 : 16,
                 }}
                 placeholder="Email Adresiniz"
               />
@@ -159,14 +191,14 @@ const RegisterScreen = () => {
                 color="#EA871C"
               />
               <TextInput
-                value={password}
-                onChangeText={(text) => setPassword(text)}
+                value={members_pass}
+                onChangeText={(text) => setMembers_pass(text)}
                 secureTextEntry={true}
                 style={{
                   color: "black",
                   marginVertical: 10,
                   width: 300,
-                  fontSize: password ? 16 : 16,
+                  fontSize: members_pass ? 16 : 16,
                 }}
                 placeholder="Şifre"
               />
@@ -179,12 +211,8 @@ const RegisterScreen = () => {
               justifyContent: "space-between",
             }}
           >
-            <Text>Beni Hatırla</Text>
-            <Text style={{ color: "red", fontWeight: 500 }}>
-              Şifremi Unuttum
-            </Text>
           </View>
-          <View style={{ marginTop: 80 }} />
+          <View style={{ marginTop: 50 }} />
           <Pressable
             onPress={handleRegister}
             style={{

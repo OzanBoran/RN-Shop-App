@@ -2,8 +2,11 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/CartReducer";
+import { useNavigation } from "@react-navigation/native";
 
 const ProductItem = ({ item }) => {
+  const navigation = useNavigation();
+
   const [addedToCart, setAddedToCart] = useState(false);
   const dispatch = useDispatch();
   const addItemToCart = (item) => {
@@ -14,61 +17,77 @@ const ProductItem = ({ item }) => {
     }, 60000);
   };
 
+  const BASE_URL = "https://dogusyapimarket.com.tr/";
+  const ImageWithBaseUrl = (imageUri) => {
+    const imageUriWithBase = BASE_URL.concat(imageUri);
+    return imageUriWithBase;
+  };
+
   return (
-    <Pressable
+    <View
       style={{
         marginVertical: 7,
         marginHorizontal: 7,
-        width:180,
-        borderWidth:1,
-        borderColor:"#FF8C0055",
+        width: 180,
+        borderWidth: 1,
+        borderColor: "#FF8C0055",
         paddingTop: 3,
         borderRadius: 12,
         backgroundColor: "white",
       }}
     >
-      <Image
-        style={{
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginBottom: 5,
-          width: 160,
-          height: 160,
-          borderTopLeftRadius: 12,
-          borderTopRightRadius: 12,
-          resizeMode: "contain",
-        }}
-        source={{ uri: item?.image }}
-      />
-
-      <Text
-        numberOfLines={1}
-        style={{
-          width: 180,
-          marginTop: 10,
-          paddingHorizontal: 5,
-        }}
+      <Pressable
+        onPress={() =>
+          navigation.navigate("Info", {
+            id: item.id,
+            products_name: item?.products_name,
+            products_price: item?.products_price,
+            oldPrice: item?.oldPrice,
+            carouselImages: item.carouselImages,
+            products_picture:ImageWithBaseUrl(item?.products_picture),
+            products_text: item?.products_text,
+            item: item,
+          })
+        }
       >
-        {item?.title}
-      </Text>
-
-      <View
-        style={{
-          marginTop: 5,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 3,
-        }}
-      >
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-          {item?.price} TL
+        <Image
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginBottom: 5,
+            width: 160,
+            height: 160,
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+            resizeMode: "contain",
+          }}
+          source={{ uri: ImageWithBaseUrl(item?.products_picture) }}
+        />
+        <Text
+          numberOfLines={2}
+          style={{
+            width: 180,
+            marginTop: 10,
+            paddingHorizontal: 5,
+          }}
+        >
+          {item?.products_name}
         </Text>
-        <Text style={{ color: "#FF8C00", fontWeight: "bold" }}>
-          {item?.rating?.rate} ratings
-        </Text>
-      </View>
 
+        <View
+          style={{
+            marginTop: 5,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 3,
+          }}
+        >
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+            {item?.products_price} TL
+          </Text>
+        </View>
+      </Pressable>
       <Pressable
         onPress={() => addItemToCart(item)}
         style={{
@@ -82,14 +101,12 @@ const ProductItem = ({ item }) => {
         }}
       >
         {addedToCart ? (
-          <View>
-            <Text>Sepete eklendi</Text>
-          </View>
+            <Text style={{ fontWeight:500 }} >Sepete eklendi</Text>
         ) : (
           <Text>Sepete ekle</Text>
         )}
       </Pressable>
-    </Pressable>
+    </View>
   );
 };
 

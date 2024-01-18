@@ -21,16 +21,15 @@ const AddressScreen = () => {
   const navigation = useNavigation();
 
   const [name, setName] = useState("");
-  const [mobileNo, setMobileNo] = useState("");
-  const [openAddress, setOpenAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [town, setTown] = useState("");
-  const [quarter, setQuarter] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [idNo, setIdNo] = useState("");
-  const [company, setCompany] = useState("");
-  const [taxNo, setTaxNo] = useState("");
-  const [taxOffice, setTaxOffice] = useState("");
+  const [members_gsm, setMembers_gsm] = useState("");
+  const [members_address, setMembers_address] = useState("");
+  const [cities_cityid, setCities_cityid] = useState("");
+  const [towns_townid, setTowns_townid] = useState("");
+  const [members_postcode, setMembers_postcode] = useState("");
+  const [members_tcno, setMembers_tcno] = useState("");
+  const [members_caption, setMembers_caption] = useState("");
+  const [members_taxno, setMembers_taxno] = useState("");
+  const [members_taxoffice, setMembers_taxoffice] = useState("");
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Bireysel");
@@ -38,48 +37,44 @@ const AddressScreen = () => {
     { label: "Bireysel", value: "Bireysel" },
     { label: "Kurumsal", value: "Kurumsal" },
   ]);
-  const { userId, setUserId } = useContext(UserType);
+  const { memberId, setMemberId } = useContext(UserType);
 
   useEffect(() => {
     const fetchUser = async () => {
       const token = await AsyncStorage.getItem("authToken");
       const decodedToken = jwtDecode(token);
-      const userId = decodedToken.userId;
-      setUserId(userId);
+      const memberId = decodedToken.memberId;
+      setMemberId(memberId);
     };
     fetchUser();
   }, []);
-  
+
   const handleAddAdress = () => {
     const address = {
-      name,
-      mobileNo,
-      openAddress,
-      city,
-      town,
-      quarter,
-      postalCode,
-      company,
-      taxNo,
-      taxOffice,
-      idNo,
+      members_gsm,
+      members_address,
+      cities_cityid,
+      towns_townid,
+      members_postcode,
+      members_caption,
+      members_taxno,
+      members_taxoffice,
+      members_tcno,
     };
 
     axios
-      .post("http://192.168.2.237:8000/addresses", { userId, address })
+      .post("http://192.168.2.237:8000/addresses", { memberId, address })
       .then((response) => {
         Alert.alert("Adres başarıyla kaydedildi");
-        setName("");
-        setMobileNo("");
-        setOpenAddress("");
-        setCity("");
-        setTown("");
-        setQuarter("");
-        setPostalCode("");
-        setCompany("");
-        setTaxNo("");
-        setTaxOffice("");
-        setIdNo("");
+        setMembers_gsm("");
+        setMembers_address("");
+        setCities_cityid("");
+        setTowns_townid("");
+        setMembers_postcode("");
+        setMembers_caption("");
+        setMembers_taxno("");
+        setMembers_taxoffice("");
+        setMembers_tcno("");
 
         setTimeout(() => {
           navigation.goBack();
@@ -107,49 +102,25 @@ const AddressScreen = () => {
       </View>
 
       <View style={{ padding: 10 }}>
-        <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
           Yeni bir adres ekleyin.
         </Text>
-
-        <TextInput
-          placeholder="Türkiye"
-          placeholderTextColor={"black"}
+        <Text
           style={{
-            padding: 10,
-            borderColor: "#EA871C77",
+            height: 1,
+            borderColor: "#EA871C55",
             borderWidth: 1,
-            marginTop: 10,
-            borderRadius: 5,
+            marginVertical: 16,
           }}
-        ></TextInput>
-
-        <View style={{ marginVertical: 10 }}>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Tam ad (ad ve soyad)
-          </Text>
-
-          <TextInput
-            value={name}
-            onChangeText={(text) => setName(text)}
-            style={{
-              padding: 10,
-              borderColor: "#EA871C77",
-              borderWidth: 1,
-              marginTop: 10,
-              borderRadius: 5,
-            }}
-            placeholder="Ad ve soyad"
-            placeholderTextColor={"black"}
-          ></TextInput>
-        </View>
+        />
 
         <View>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>
             Teslimat için cep telefonu
           </Text>
           <TextInput
-            value={mobileNo}
-            onChangeText={(text) => setMobileNo(text)}
+            value={members_gsm}
+            onChangeText={(text) => setMembers_gsm(text)}
             style={{
               padding: 10,
               borderColor: "#EA871C77",
@@ -165,13 +136,11 @@ const AddressScreen = () => {
           </Text>
         </View>
 
-        <View style={{ marginTop: 30, marginBottom: 10 }}>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Adres satırı
-          </Text>
+        <View style={{ marginTop: 16, marginBottom: 10 }}>
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>Adres satırı</Text>
           <TextInput
-            value={openAddress}
-            onChangeText={(text) => setOpenAddress(text)}
+            value={members_address}
+            onChangeText={(text) => setMembers_address(text)}
             style={{
               padding: 10,
               borderColor: "#EA871C77",
@@ -187,8 +156,8 @@ const AddressScreen = () => {
         <View style={{ marginVertical: 10 }}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>Şehir</Text>
           <TextInput
-            value={city}
-            onChangeText={(text) => setCity(text)}
+            value={cities_cityid}
+            onChangeText={(text) => setCities_cityid(text)}
             style={{
               padding: 10,
               borderColor: "#EA871C77",
@@ -202,24 +171,8 @@ const AddressScreen = () => {
         <View style={{ marginVertical: 10 }}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>İlçe</Text>
           <TextInput
-            value={town}
-            onChangeText={(text) => setTown(text)}
-            style={{
-              padding: 10,
-              borderColor: "#EA871C77",
-              borderWidth: 1,
-              marginTop: 10,
-              borderRadius: 5,
-            }}
-          ></TextInput>
-        </View>
-        <View style={{ marginVertical: 10 }}>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Mahalle / Köy
-          </Text>
-          <TextInput
-            value={quarter}
-            onChangeText={(text) => setQuarter(text)}
+            value={towns_townid}
+            onChangeText={(text) => setTowns_townid(text)}
             style={{
               padding: 10,
               borderColor: "#EA871C77",
@@ -232,8 +185,8 @@ const AddressScreen = () => {
         <View style={{ marginVertical: 10 }}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>Posta Kodu</Text>
           <TextInput
-            value={postalCode}
-            onChangeText={(text) => setPostalCode(text)}
+            value={members_postcode}
+            onChangeText={(text) => setMembers_postcode(text)}
             style={{
               padding: 10,
               borderColor: "#EA871C77",
@@ -271,8 +224,8 @@ const AddressScreen = () => {
                 Firma Ünvanı
               </Text>
               <TextInput
-                value={company}
-                onChangeText={(text) => setCompany(text)}
+                value={members_caption}
+                onChangeText={(text) => setMembers_caption(text)}
                 style={{
                   padding: 10,
                   borderColor: "#EA871C77",
@@ -285,8 +238,8 @@ const AddressScreen = () => {
                 Vergi Numarası
               </Text>
               <TextInput
-                value={taxNo}
-                onChangeText={(text) => setTaxNo(text)}
+                value={members_taxno}
+                onChangeText={(text) => setMembers_taxno(text)}
                 style={{
                   padding: 10,
                   borderColor: "#EA871C77",
@@ -299,8 +252,8 @@ const AddressScreen = () => {
                 Vergi Dairesi
               </Text>
               <TextInput
-                value={taxOffice}
-                onChangeText={(text) => setTaxOffice(text)}
+                value={members_taxoffice}
+                onChangeText={(text) => setMembers_taxoffice(text)}
                 style={{
                   padding: 10,
                   borderColor: "#EA871C77",
@@ -316,8 +269,8 @@ const AddressScreen = () => {
                 TC kimlik numarası
               </Text>
               <TextInput
-                value={idNo}
-                onChangeText={(text) => setIdNo(text)}
+                value={members_tcno}
+                onChangeText={(text) => setMembers_tcno(text)}
                 style={{
                   padding: 10,
                   borderColor: "#EA871C77",

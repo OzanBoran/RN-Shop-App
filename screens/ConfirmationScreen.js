@@ -31,11 +31,11 @@ const ConfirmationScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
 
   const total = cart
-    ?.map((item) => item.price * item.quantity)
+    ?.map((item) => item.products_price * item.quantity)
     .reduce((curr, prev) => curr + prev, 0);
 
   const [addresses, setAddresses] = useState([]);
-  const { userId, setUserId } = useContext(UserType);
+  const { memberId, setMemberId } = useContext(UserType);
   useEffect(() => {
     fetchAddresses();
   }, []);
@@ -43,7 +43,7 @@ const ConfirmationScreen = () => {
   const fetchAddresses = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.2.237:8000/addresses/${userId}`
+        `http://192.168.2.237:8000/addresses/${memberId}`
       );
       const { addresses } = response.data;
 
@@ -92,7 +92,7 @@ const ConfirmationScreen = () => {
   const handlePlaceOrder = async () => {
     try {
       const orderData = {
-        userId: userId,
+        memberId: memberId,
         cartItems: cart,
         totalPrice: total,
         shippingAddress: selectedAddress,

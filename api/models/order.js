@@ -1,14 +1,8 @@
-const mongoose = require("mongoose");
 
-const orderSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+const order = [{
   products: [
     {
-      name: {
+      products_name: {
         type: String,
         required: true,
       },
@@ -16,11 +10,11 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
-      price: {
+      products_price: {
         type: Number,
         required: true,
       },
-      image: {
+      products_picture: {
         type: String,
         required: true,
       },
@@ -31,23 +25,23 @@ const orderSchema = new mongoose.Schema({
     required: true,
   },
   shippingAddress: {
-    name: {
+    members_name: {
       type: String,
       required: true,
     },
-    mobileNo: {
+    members_gsm: {
       type: String,
       required: true,
     },
-    openAddress: {
+    members_address: {
       type: String,
       required: true,
     },
-    city: {
+    cities_cityid: {
       type: String,
       required: true,
     },
-    town: {
+    towns_townid: {
       type: String,
       required: true,
     },
@@ -55,7 +49,7 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    postalCode: {
+    members_postcode: {
       type: String,
       required: true,
     },
@@ -68,8 +62,6 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
+}];
 
-const Order = mongoose.model("Order", orderSchema);
-
-module.exports = Order;
+module.exports = order;

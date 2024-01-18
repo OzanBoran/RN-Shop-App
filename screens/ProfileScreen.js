@@ -14,7 +14,7 @@ import { UserType } from "../UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
-  const { userId, setUserId } = useContext(UserType);
+  const { memberId, setMemberId } = useContext(UserType);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -47,15 +47,15 @@ const ProfileScreen = () => {
       ),
     });
   }, []);
-  const [user, setUser] = useState();
+  const [member, setMember] = useState();
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.2.237:8000/profile/${userId}`
+          `http://192.168.2.237:8000/profile/${memberId}`
         );
-        const { user } = response.data;
-        setUser(user);
+        const { member } = response.data;
+        setMember(member);
       } catch (error) {
         console.log("error", error);
       }
@@ -75,7 +75,7 @@ const ProfileScreen = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.2.237:8000/orders/${userId}`
+          `http://192.168.2.237:8000/orders/${memberId}`
         );
         const orders = response.data.orders;
         setOrders(orders);
@@ -91,7 +91,7 @@ const ProfileScreen = () => {
   return (
     <ScrollView style={{ padding: 10, flex: 1, backgroundColor: "white" }}>
       <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-        Welcome {user?.name}
+        Welcome {member?.name}
       </Text>
 
       <View

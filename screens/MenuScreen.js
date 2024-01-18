@@ -7,12 +7,31 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons, AntDesign, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const CartScreen = () => {
   const navigation = useNavigation();
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const getCaegories = () => {
+      fetch(
+        "http://apitest.dogusyapimarket.com.tr/api/v2/products?pagination[perpage]=100",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          setCategories(result.data);
+        })
+        .catch((error) => console.log("error", error));
+    };
+
+    getCategories();
+  }, []);
+
 
   return (
     <ScrollView style={{ marginTop: 50, flex: 1, backgroundColor: "white" }}>
